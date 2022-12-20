@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 import ToDoComponent from "./components";
@@ -9,8 +9,14 @@ import { ToDoData } from "../data/types/types";
 import { TODO_URL } from "./constant";
 
 const TodoContainer = () => {
+  const [todos,setTodos]=useState<ToDoData[]>([]);
   const [showCompleted, setShowCompleted] = useState(false);
-  const { data: todos, setData: setTodos, loading, error } = useFetch(TODO_URL);
+  const { data, loading, error } = useFetch(TODO_URL);
+
+  useEffect(()=>{
+    if(data!==null)
+    setTodos(data);
+  },[data]);
 
   const addTodo = (title: string) => {
     if (title.trim() === "") return;
@@ -20,12 +26,12 @@ const TodoContainer = () => {
   };
 
   const displayTodos = showCompleted
-    ? (todos as ToDoData[]).filter((todo) => todo.completed === true)
+    ? todos.filter((todo) => todo.completed === true)
     : todos;
 
   const markTodoCompleted = (id: number, completed: boolean) => {
     setTodos(
-      (todos as ToDoData[]).map((todo) => {
+      todos.map((todo) => {
         if (todo.id === id) {
           return { ...todo, completed: completed };
         } else {
