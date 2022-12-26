@@ -10,11 +10,11 @@
   font-size: 20px;
 }
 
-.loading-spinner{
- padding-top: 4cm;
+.loading-spinner {
+  padding-top: 4cm;
 }
 
-.error-msg{
+.error-msg {
   color: rgb(246, 91, 91);
   padding-top: 20px;
   font-size: 24px;
@@ -28,14 +28,23 @@ input[type="checkbox"] {
   accent-color: rgb(246, 162, 67);
 }
 
+.show-list {
+  display: flex;
+  padding-left: 40vw;
+  padding-top: 0.5rem;
+}
+
+.show-list a {
+  text-decoration: none;
+}
+
 .check-box:checked ~ label.task-title {
   text-decoration: line-through;
   color: rgb(246, 162, 67);
 }
 
-.show-list {
-  display: flex;
-  padding-left: 43.25vw;
+.show-list a:hover {
+  color: rgba(246, 139, 16, 0.8);
 }
 
 h1 {
@@ -62,4 +71,122 @@ input.text {
 
 .show-completed-filter {
   margin-top: 20px;
+}
+
+.cross-button {
+  position: absolute;
+  top: 18%;
+  right: 25%;
+  border: 1px solid crimson;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #f5eeee;
+  background-color: crimson;
+}
+
+.cross-button-link {
+  text-decoration: none;
+  color: #f5eeee;
+  font-weight: bold;
+}
+
+.delete-btn{
+  height:35px;
+  width:90px;
+  color:#f5eeee;
+  background-color: crimson;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+}
+
+.display-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+  /*Paper*/
+  background: #fff;
+  width: 60%;
+  margin: 100px auto;
+  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
+  height: auto;
+}
+
+.display-table th {
+  width: 5rem;
+  padding: 2rem;
+}
+
+.link-home {
+  position: relative;
+  top: 5%;
+}
+
+.link-home:hover {
+  color: rgba(246, 139, 16, 0.8);
+}
+
+.add-form {
+  margin: 25%;
+  background: #fff;
+  width: 50%;
+  margin: 100px auto;
+  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-form-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  overflow: hidden;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+form label {
+  width: 200px;
+  margin-right: 5%;
+}
+
+form div {
+  margin-top: 1rem;
+}
+
+form input {
+  width: 250px;
+  height: 25px;
+  border-radius: 2%;
+  border-color: rgba(51, 51, 51, 0.753);
+}
+
+form textarea {
+  width: 250px;
+  border-radius: 2%;
+  border-color: rgba(51, 51, 51, 0.753);
+}
+
+form input[type="submit"] {
+  width: 40%;
+  height: auto;
+  background-color: rgb(246, 162, 67);
+  color: white;
+  border: none;
+  padding: 0.75em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-left: 12%;
 }
