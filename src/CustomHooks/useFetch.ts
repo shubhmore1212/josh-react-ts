@@ -14,7 +14,7 @@ export const useFetch = (url: string) => {
       .then((res) =>
         setTimeout(() => {
           //Spliced only for todo since the list is big
-            setData(res.splice(0,10));
+            setData(res);
           setLoading(false);
         }, 1000)
       )
