@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export const useFetch = (url: string) => {
-  const [data,setData]=useState<any>(null);
-  const [loading,setLoading]=useState<boolean>(true);
-  const [error,setError]=useState("");
+export const useFetch = (url: any) => {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
-   useEffect(()=>{
+  useEffect(() => {
     fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error("Could not fetch data");
@@ -13,16 +13,16 @@ export const useFetch = (url: string) => {
       })
       .then((res) =>
         setTimeout(() => {
-          //Spliced only for todo since the list is big
-            setData(res);
+          setData(res);
           setLoading(false);
         }, 1000)
       )
       .catch((err) => {
         setError(err.message);
         setLoading(false);
+        console.log(err.message)
       });
-     },[url])
+  }, [url]);
 
-  return {data,loading,error};
+  return { data, loading, error };
 };
