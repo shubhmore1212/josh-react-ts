@@ -1,47 +1,41 @@
 import React from "react";
-import { InfinitySpin } from "react-loader-spinner";
 
 import AddTodoButton from "./AddTodoButton";
 import TodoFilter from "./TodoFilter";
 import TodoList from "./TodoList";
+import Loader from "../../../Shared/components/Loader";
 
 import { ToDoData } from "../../../data/types/types";
 
 interface IProps {
   showCompleted: boolean;
-  setShowCompleted: (showCompleted: boolean) => void;
+  statusHandler: () => void;
   todos: ToDoData[];
   markTodoCompleted: (id: number, showCompleted: boolean) => void;
   loading: boolean;
   error: string;
 }
 
-const ToDoComponent = ({
-  showCompleted,
-  setShowCompleted,
-  todos,
-  markTodoCompleted,
-  loading,
-  error,
-}: IProps) => {
+const ToDoComponent: React.FC<IProps> = (props) => {
   return (
     <>
       <h1>To Do</h1>
-      <AddTodoButton  />
+      <AddTodoButton />
       <TodoFilter
-        showCompleted={showCompleted}
-        setShowCompleted={setShowCompleted}
+        showCompleted={props.showCompleted}
+        statusHandler={props.statusHandler}
       />
-      {loading ? (
-        <div className="loading-spinner">
-          <InfinitySpin color="rgb(246, 162, 67)" width="200" />
-        </div>
+      {props.loading ? (
+        <Loader />
       ) : (
         <>
-          {error === "" ? (
-            <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
+          {!props.error ? (
+            <TodoList
+              todos={props.todos}
+              markTodoCompleted={props.markTodoCompleted}
+            />
           ) : (
-            <div className="error-msg">{error}</div>
+            <div className="error-msg">{props.error}</div>
           )}
         </>
       )}

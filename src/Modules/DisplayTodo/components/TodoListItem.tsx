@@ -8,23 +8,18 @@ interface IProps {
   markTodoCompleted: (id: number, completed: boolean) => void;
 }
 
-const TodoListItem: React.FC<IProps> = ({
-  id,
-  title,
-  completed,
-  markTodoCompleted,
-}) => {
+const TodoListItem: React.FC<IProps> = (props) => {
   return (
     <div className="show-list">
       <li>
         <input
           type="checkbox"
           className="check-box"
-          checked={completed}
-          onChange={(e) => markTodoCompleted(id, e.target.checked)}
+          checked={props.completed}
+          onChange={(e) => props.markTodoCompleted(props.id, e.target.checked)}
         />
         <label htmlFor="task-title" className="task-title">
-          <Link to={`/display/${id}`}>{title}</Link>
+          <Link to={`display/${props.id}`}>{props.title}</Link>
         </label>
       </li>
     </div>

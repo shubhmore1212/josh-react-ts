@@ -2,17 +2,17 @@ import React from "react";
 
 interface IProps {
   showCompleted: boolean;
-  setShowCompleted: (showCompleted: boolean) => void;
+  statusHandler:()=>void
 }
 
-const TodoFilter: React.FC<IProps> = ({ showCompleted, setShowCompleted }) => {
+const TodoFilter: React.FC<IProps> = (props) => {
   return (
     <div className="show-completed-filter">
       <input
         type="checkbox"
         id="filter"
-        checked={showCompleted}
-        onChange={() => setShowCompleted(!showCompleted)}
+        checked={props.showCompleted}
+        onChange={props.statusHandler}
       />
       <label htmlFor="filter">Show Completed</label>
     </div>

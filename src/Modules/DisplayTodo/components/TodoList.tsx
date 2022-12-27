@@ -4,10 +4,12 @@ import TodoListItem from "./TodoListItem";
 
 import { ToDoData } from "../../../data/types/types";
 
-const TodoList = (props: {
+interface IProps {
   todos: ToDoData[];
   markTodoCompleted: (id: number, completed: boolean) => void;
-}) => {
+}
+
+const TodoList: React.FC<IProps> = (props) => {
   return (
     <div className="list">
       <ul>

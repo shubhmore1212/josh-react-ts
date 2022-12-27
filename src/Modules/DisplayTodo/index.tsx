@@ -6,19 +6,17 @@ import { useFetch } from "../../CustomHooks/useFetch";
 
 import { ToDoData } from "../../data/types/types";
 
-import { TODO_URL } from "./constant";
-
 const TodoContainer = () => {
   const [todos, setTodos] = useState<ToDoData[]>([]);
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
-  const { data, loading, error } = useFetch(TODO_URL);
+  const { data, loading, error } = useFetch(process.env.REACT_APP_TODO_URL);
 
   useEffect(() => {
-    if (data !== null) setTodos(data);
+    if (!!data) setTodos(data);
   }, [data]);
 
   const displayTodos = showCompleted
-    ? todos.filter((todo) => todo.completed === true)
+    ? todos.filter((todo) => todo.completed)
     : todos;
 
   const markTodoCompleted = (id: number, completed: boolean) => {
@@ -26,7 +24,7 @@ const TodoContainer = () => {
       todos.map((todo) => {
         if (todo.id === id) {
           let tempObj = { ...todo, completed: completed };
-          fetch(`${TODO_URL}/${id}`, {
+          fetch(`${process.env.REACT_APP_TODO_URL}/${id}`, {
             method: "PATCH",
             mode: "cors",
             headers: {
@@ -44,10 +42,14 @@ const TodoContainer = () => {
     );
   };
 
+  const statusHandler = () => {
+    setShowCompleted(!showCompleted);
+  };
+
   return (
     <ToDoComponent
       showCompleted={showCompleted}
-      setShowCompleted={setShowCompleted}
+      statusHandler={statusHandler}
       todos={displayTodos}
       markTodoCompleted={markTodoCompleted}
       loading={loading}
