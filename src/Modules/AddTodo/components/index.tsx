@@ -1,32 +1,29 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { NavLink } from "react-router-dom";
+
+import { ROUTES } from "../../../appContants";
+import { TASK_STATE } from "../../../constant";
 
 interface IProps {
   title: string;
-  setTitle: (title: string) => void;
+  titleHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   body: string;
-  setBody: (body: string) => void;
-  handleSubmit: (e: any) => void;
+  bodyHandler: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-const AddTodoComponent: React.FC<IProps> = ({
-  title,
-  setTitle,
-  body,
-  setBody,
-  handleSubmit,
-}) => {
+const AddTodoComponent: React.FC<IProps> = (props) => {
   return (
     <div className="add-form">
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={props.handleSubmit}>
         <h2>Add Todo</h2>
         <div>
           <label htmlFor="title">Task:</label>
           <input
             type="text"
             name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={props.title}
+            onChange={props.titleHandler}
           />
           <br />
         </div>
@@ -34,19 +31,22 @@ const AddTodoComponent: React.FC<IProps> = ({
           <label htmlFor="body">Details:</label>
           <textarea
             name="body"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={props.body}
+            onChange={props.bodyHandler}
           />
           <br />
         </div>
         <div>
           <label htmlFor="completed">Status:</label>
-          <input type="text" defaultValue={"false"} disabled />
+          <input type="text" defaultValue={TASK_STATE.PENDING} disabled />
           <br />
         </div>
         <input type="submit" value="Add Todo" />
       </form>
-      <NavLink className={"link-home"} to="/">{`<< Go to ToDo-Page`}</NavLink>
+      <NavLink
+        className="link-home"
+        to={ROUTES.HOME}
+      >{`<< Go to ToDo-Page`}</NavLink>
     </div>
   );
 };

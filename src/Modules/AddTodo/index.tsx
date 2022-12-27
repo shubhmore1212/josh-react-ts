@@ -1,34 +1,24 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
-import AddTodoComponent from "./components"
+import AddTodoComponent from "./components";
 
-import { TODO_URL } from "../DisplayTodo/constant";
-
-const AddTodoContainer=()=>{
-    const [title, setTitle] = useState<string>("");
+const AddTodoContainer = () => {
+  const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let tempObj = {};
-    if (
-      title?.trim() !== "" &&
-      title !== undefined &&
-      body?.trim() !== "" &&
-      body !== undefined
-    ) {
-      let resData = await fetch(TODO_URL);
+    if (title?.trim() !== "" && body?.trim() !== "") {
+      let resData = await fetch(process.env.REACT_APP_TODO_URL as string);
       let res = await resData.json();
-
-      tempObj = {
-        ...tempObj,
-        id: res[res.length-1]["id"]+1,
-        title: title,
-        body: body,
+      let newID = res.length ? res[res.length - 1]["id"] + 1 : 1;
+      let tempObj = {
+        id: newID,
+        title,
+        body,
         completed: false,
       };
-      
-      await fetch(TODO_URL, {
+      await fetch(process.env.REACT_APP_TODO_URL as string, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,20 +28,27 @@ const AddTodoContainer=()=>{
         .then((res) => res.json())
         .catch((err) => console.log(err.message));
     }
-
     setTitle("");
     setBody("");
   };
 
+  const titleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const bodyHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setBody(e.target.value);
+  };
+
   return (
     <AddTodoComponent
-    title={title}
-    setTitle={setTitle}
-    body={body}
-    setBody={setBody}
-     handleSubmit={handleSubmit}
+      title={title}
+      titleHandler={titleHandler}
+      body={body}
+      bodyHandler={bodyHandler}
+      handleSubmit={handleSubmit}
     />
   );
-}
+};
 
 export default React.memo(AddTodoContainer);
