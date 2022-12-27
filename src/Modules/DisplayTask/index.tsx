@@ -1,18 +1,21 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import DisplayTaskComponent from "./components";
 import { useFetch } from "../../CustomHooks/useFetch";
 
-import { TODO_URL } from "../DisplayTodo/constant";
+import { ROUTES } from "../../appContants";
+import { TASK_STATE } from "../../constant";
 
 const DisplayTaskContainer = () => {
   const { id } = useParams();
-  const { data, loading, error } = useFetch(TODO_URL + `/${id}`);
+  const { data, loading, error } = useFetch(
+    process.env.REACT_APP_TODO_URL +`/${id}`
+  );
   const navigate = useNavigate();
 
-  const deleteTodo = (todoId: any) => {
-    fetch(`${TODO_URL}/${todoId}`, {
+  const deleteTodo = (todoId: number) => {
+    fetch(`${process.env.REACT_APP_TODO_URL}/${todoId}`, {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -21,15 +24,15 @@ const DisplayTaskContainer = () => {
     })
       .then((res) => res.json())
       .catch((err) => console.log(err));
-    navigate("/");
+    navigate(ROUTES.HOME);
   };
 
-  const markTodoCompleted = (completed: string) => {
+  const markTodoCompleted = (e: ChangeEvent<HTMLSelectElement>) => {
     let tempObj = {
       ...data,
-      completed: completed === "Completed" ? true : false,
+      completed: e.target.value === TASK_STATE.COMPLETED ? true : false,
     };
-    fetch(`${TODO_URL}/${id}`, {
+    fetch(`${process.env.REACT_APP_TODO_URL}/${id}`, {
       method: "PATCH",
       mode: "cors",
       headers: {
@@ -41,13 +44,15 @@ const DisplayTaskContainer = () => {
       .catch((err) => console.log(err));
   };
 
-  return <DisplayTaskComponent 
-  data={data}
-  loading={loading}
-  error={error}
-  markTodoCompleted={markTodoCompleted}
-  deleteTodo={deleteTodo}
-  />;
+  return (
+    <DisplayTaskComponent
+      data={data}
+      loading={loading}
+      error={error}
+      markTodoCompleted={markTodoCompleted}
+      deleteTodo={deleteTodo}
+    />
+  );
 };
 
 export default React.memo(DisplayTaskContainer);

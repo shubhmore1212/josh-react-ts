@@ -1,35 +1,35 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { NavLink } from "react-router-dom";
 
-import { InfinitySpin } from "react-loader-spinner";
+import Loader from "../../../Shared/components/Loader";
 
 import { ToDoData } from "../../../data/types/types";
+import { ROUTES } from "../../../appContants";
+import { TASK_STATE } from "../../../constant";
 
-interface IProps{
-    data:ToDoData,
-    loading:boolean,
-    error:string,
-    markTodoCompleted:(completed:string)=>void,
-    deleteTodo:(id:number)=>void
+interface IProps {
+  data: ToDoData;
+  loading: boolean;
+  error: string;
+  markTodoCompleted: (e: ChangeEvent<HTMLSelectElement>) => void;
+  deleteTodo: (id: number) => void;
 }
 
-const DisplayTaskComponent :React.FC<IProps> = ({data,loading,error,markTodoCompleted,deleteTodo}) => {
+const DisplayTaskComponent: React.FC<IProps> = (props) => {
   return (
     <>
-      {loading ? (
-        <div className="loading-spinner">
-          <InfinitySpin color="rgb(246, 162, 67)" width="200" />
-        </div>
+      {props.loading ? (
+        <Loader />
       ) : (
         <>
-          {error === "" ? (
+          {!props.error ? (
             <div className="display-table">
               <h1>To Do</h1>
               <div className="cross-button">
                 <NavLink
                   className="cross-button-link"
                   title="Go to ToDo Page"
-                  to="/"
+                  to={ROUTES.HOME}
                 >
                   X
                 </NavLink>
@@ -38,27 +38,31 @@ const DisplayTaskComponent :React.FC<IProps> = ({data,loading,error,markTodoComp
                 <tbody>
                   <tr>
                     <th>ID :</th>
-                    <td> {data.id}</td>
+                    <td> {props.data.id}</td>
                   </tr>
                   <tr>
                     <th>Task :</th>
-                    <td> {data.title}</td>
+                    <td> {props.data.title}</td>
                   </tr>
                   <tr>
                     <th>Body :</th>
-                    <td>{data.body}</td>
+                    <td>{props.data.body}</td>
                   </tr>
                   <tr>
                     <th>Status :</th>
                     <td>
                       <select
                         defaultValue={
-                          (data.completed as boolean) ? "Completed" : "Pending"
+                          props.data.completed ? "Completed" : "Pending"
                         }
-                        onChange={(e) => markTodoCompleted(e.target.value)}
+                        onChange={props.markTodoCompleted}
                       >
-                        <option value="Completed">Completed</option>
-                        <option value="Pending">Pending</option>
+                        <option value={TASK_STATE.COMPLETED}>
+                          {TASK_STATE.COMPLETED}
+                        </option>
+                        <option value={TASK_STATE.PENDING}>
+                          {TASK_STATE.PENDING}
+                        </option>
                       </select>
                     </td>
                   </tr>
@@ -66,7 +70,7 @@ const DisplayTaskComponent :React.FC<IProps> = ({data,loading,error,markTodoComp
                     <td colSpan={2}>
                       <button
                         className="delete-btn"
-                        onClick={() => deleteTodo(data.id)}
+                        onClick={() => props.deleteTodo(props.data.id)}
                       >
                         Delete
                       </button>
@@ -76,7 +80,7 @@ const DisplayTaskComponent :React.FC<IProps> = ({data,loading,error,markTodoComp
               </table>
             </div>
           ) : (
-            <div className="error-msg">{error}</div>
+            <div className="error-msg">{props.error}</div>
           )}
         </>
       )}
