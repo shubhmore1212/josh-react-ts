@@ -1,8 +1,6 @@
-export interface ToDoData{
-    id:number
-    title:string
-    // completed?:boolean
-    body:string
-    completed:boolean
+export interface ToDoData {
+  id: number;
+  title: string;
+  body: string;
+  completed: boolean;
 }
-
