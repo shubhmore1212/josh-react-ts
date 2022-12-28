@@ -13,17 +13,18 @@ interface IProps {
 }
 
 const AddTodoComponent: React.FC<IProps> = (props) => {
+  const {title,titleHandler,body,bodyHandler,handleSubmit}=props;
   return (
     <div className="add-form">
-      <form onSubmit={props.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h2>Add Todo</h2>
         <div>
           <label htmlFor="title">Task:</label>
           <input
             type="text"
             name="title"
-            value={props.title}
-            onChange={props.titleHandler}
+            value={title}
+            onChange={titleHandler}
           />
           <br />
         </div>
@@ -31,8 +32,8 @@ const AddTodoComponent: React.FC<IProps> = (props) => {
           <label htmlFor="body">Details:</label>
           <textarea
             name="body"
-            value={props.body}
-            onChange={props.bodyHandler}
+            value={body}
+            onChange={bodyHandler}
           />
           <br />
         </div>
