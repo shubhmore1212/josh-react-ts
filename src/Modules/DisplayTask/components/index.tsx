@@ -16,13 +16,14 @@ interface IProps {
 }
 
 const DisplayTaskComponent: React.FC<IProps> = (props) => {
+  const { data, loading, error, markTodoCompleted, deleteTodo } = props;
   return (
     <>
-      {props.loading ? (
+      {loading ? (
         <Loader />
       ) : (
         <>
-          {!props.error ? (
+          {!error ? (
             <div className="display-table">
               <h1>To Do</h1>
               <div className="cross-button">
@@ -38,24 +39,22 @@ const DisplayTaskComponent: React.FC<IProps> = (props) => {
                 <tbody>
                   <tr>
                     <th>ID :</th>
-                    <td> {props.data.id}</td>
+                    <td> {data.id}</td>
                   </tr>
                   <tr>
                     <th>Task :</th>
-                    <td> {props.data.title}</td>
+                    <td> {data.title}</td>
                   </tr>
                   <tr>
                     <th>Body :</th>
-                    <td>{props.data.body}</td>
+                    <td>{data.body}</td>
                   </tr>
                   <tr>
                     <th>Status :</th>
                     <td>
                       <select
-                        defaultValue={
-                          props.data.completed ? "Completed" : "Pending"
-                        }
-                        onChange={props.markTodoCompleted}
+                        defaultValue={data.completed ? "Completed" : "Pending"}
+                        onChange={markTodoCompleted}
                       >
                         <option value={TASK_STATE.COMPLETED}>
                           {TASK_STATE.COMPLETED}
@@ -70,7 +69,7 @@ const DisplayTaskComponent: React.FC<IProps> = (props) => {
                     <td colSpan={2}>
                       <button
                         className="delete-btn"
-                        onClick={() => props.deleteTodo(props.data.id)}
+                        onClick={() => deleteTodo(data.id)}
                       >
                         Delete
                       </button>
@@ -80,7 +79,7 @@ const DisplayTaskComponent: React.FC<IProps> = (props) => {
               </table>
             </div>
           ) : (
-            <div className="error-msg">{props.error}</div>
+            <div className="error-msg">{error}</div>
           )}
         </>
       )}
