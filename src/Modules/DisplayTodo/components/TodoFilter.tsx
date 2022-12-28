@@ -6,13 +6,14 @@ interface IProps {
 }
 
 const TodoFilter: React.FC<IProps> = (props) => {
+  const {showCompleted,statusHandler} = props
   return (
     <div className="show-completed-filter">
       <input
         type="checkbox"
         id="filter"
-        checked={props.showCompleted}
-        onChange={props.statusHandler}
+        checked={showCompleted}
+        onChange={statusHandler}
       />
       <label htmlFor="filter">Show Completed</label>
     </div>

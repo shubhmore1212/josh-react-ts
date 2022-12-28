@@ -17,25 +17,27 @@ interface IProps {
 }
 
 const ToDoComponent: React.FC<IProps> = (props) => {
+  const {
+    showCompleted,
+    statusHandler,
+    todos,
+    markTodoCompleted,
+    loading,
+    error,
+  } = props;
   return (
     <>
       <h1>To Do</h1>
       <AddTodoButton />
-      <TodoFilter
-        showCompleted={props.showCompleted}
-        statusHandler={props.statusHandler}
-      />
-      {props.loading ? (
+      <TodoFilter showCompleted={showCompleted} statusHandler={statusHandler} />
+      {loading ? (
         <Loader />
       ) : (
         <>
-          {!props.error ? (
-            <TodoList
-              todos={props.todos}
-              markTodoCompleted={props.markTodoCompleted}
-            />
+          {!error ? (
+            <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
           ) : (
-            <div className="error-msg">{props.error}</div>
+            <div className="error-msg">{error}</div>
           )}
         </>
       )}

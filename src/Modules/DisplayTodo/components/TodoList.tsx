@@ -10,15 +10,16 @@ interface IProps {
 }
 
 const TodoList: React.FC<IProps> = (props) => {
+  const {todos,markTodoCompleted}=props;
   return (
     <div className="list">
       <ul>
-        {props.todos.map((todo, index) => (
+        {todos.map((todo, index) => (
           <TodoListItem
             id={todo.id}
             title={todo.title}
             completed={todo.completed}
-            markTodoCompleted={props.markTodoCompleted}
+            markTodoCompleted={markTodoCompleted}
             key={index}
           />
         ))}
