@@ -4,14 +4,15 @@ interface IProps {
   body: string;
   btn1: string;
   btn2: string;
-  btn1Handler: any;
+  btn1Handler: () => void;
   btn2Handler: () => void;
 }
 const Modal = (props: IProps) => {
   const { isOpen, title, body, btn1, btn2, btn1Handler, btn2Handler } = props;
+  
   return (
     <>
-      {isOpen ? (
+      {isOpen && (
         <div className="modalBackground">
           <div className="modal-container">
             <div className="title">
@@ -26,7 +27,7 @@ const Modal = (props: IProps) => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
