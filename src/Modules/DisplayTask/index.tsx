@@ -11,9 +11,7 @@ import { TODO_URL } from "../../utils/constant";
 
 const DisplayTaskContainer = () => {
   const { id } = useParams();
-  const { data, loading, error } = useFetch(
-    TODO_URL + `/${id}`
-  );
+  const { data, loading, error } = useFetch(`${id}`);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -33,7 +31,7 @@ const DisplayTaskContainer = () => {
   const markTodoCompleted = (e: ChangeEvent<HTMLSelectElement>) => {
     let tempObj = {
       ...data,
-      completed: e.target.value === TASK_STATE.COMPLETED ? true : false,
+      completed: e.target.value === TASK_STATE.COMPLETED,
     };
     fetch(`${TODO_URL}/${id}`, {
       method: "PATCH",
@@ -51,23 +49,31 @@ const DisplayTaskContainer = () => {
     setOpenModal(!openModal);
   };
 
+  const btn1Handler = () => {
+    deleteTodo(data.id);
+  };
+
+  const btn2Handler = () => {
+    modalHandler();
+  };
+
   return (
     <>
-      <DisplayTaskComponent
-        data={data}
-        loading={loading}
-        error={error}
-        markTodoCompleted={markTodoCompleted}
-        modalHandler={modalHandler}
-      />
       <Modal
         isOpen={openModal}
         title="Delete"
         body="Are you sure?"
         btn1="Yes"
         btn2="No"
-        btn1Handler={() => deleteTodo(data.id)}
-        btn2Handler={modalHandler}
+        btn1Handler={btn1Handler}
+        btn2Handler={btn2Handler}
+      />
+      <DisplayTaskComponent
+        data={data}
+        loading={loading}
+        error={error}
+        markTodoCompleted={markTodoCompleted}
+        modalHandler={modalHandler}
       />
     </>
   );
