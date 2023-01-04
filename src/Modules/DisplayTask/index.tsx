@@ -24,7 +24,7 @@ const DisplayTaskContainer = () => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .catch((err) => console.log(err));
+      .catch((err) => err);
     navigate(ROUTES.HOME);
   };
 
@@ -42,7 +42,7 @@ const DisplayTaskContainer = () => {
       body: JSON.stringify(tempObj),
     })
       .then((res) => res.json())
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   };
 
   const modalHandler = () => {

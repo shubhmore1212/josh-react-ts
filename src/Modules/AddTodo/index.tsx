@@ -39,9 +39,8 @@ const AddTodoContainer = () => {
           setBody("");
           setDate("");
           setOpenModal(true);
-          return res.json();
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => err.message);
     }
   };
 

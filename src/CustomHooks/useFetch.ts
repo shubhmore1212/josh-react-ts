@@ -23,7 +23,6 @@ export const useFetch = (url?: string) => {
       .catch((err) => {
         setError(err.message);
         setLoading(false);
-        console.log(err.message)
       });
   }, [url]);
 
