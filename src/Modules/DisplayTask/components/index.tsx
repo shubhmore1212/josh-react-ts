@@ -12,11 +12,17 @@ interface IProps {
   loading: boolean;
   error: string;
   markTodoCompleted: (e: ChangeEvent<HTMLSelectElement>) => void;
-  deleteTodo: (id: number) => void;
+  modalHandler: () => void;
 }
 
 const DisplayTaskComponent: React.FC<IProps> = (props) => {
-  const { data, loading, error, markTodoCompleted, deleteTodo } = props;
+  const {
+    data,
+    loading,
+    error,
+    markTodoCompleted,
+    modalHandler,
+  } = props;
   return (
     <>
       {loading ? (
@@ -38,19 +44,28 @@ const DisplayTaskComponent: React.FC<IProps> = (props) => {
               <table>
                 <tbody>
                   <tr>
-                    <th>ID :</th>
+                    <th>ID</th>
+                    <td>:</td>
                     <td> {data.id}</td>
                   </tr>
                   <tr>
-                    <th>Task :</th>
+                    <th>Task</th>
+                    <td>:</td>
                     <td> {data.title}</td>
                   </tr>
                   <tr>
                     <th>Body :</th>
+                    <td>:</td>
                     <td>{data.body}</td>
                   </tr>
                   <tr>
-                    <th>Status :</th>
+                    <th>Date</th>
+                    <td>:</td>
+                    <td>{data.date}</td>
+                  </tr>
+                  <tr>
+                    <th>Status</th>
+                    <td>:</td>
                     <td>
                       <select
                         defaultValue={data.completed ? "Completed" : "Pending"}
@@ -66,11 +81,8 @@ const DisplayTaskComponent: React.FC<IProps> = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan={2}>
-                      <button
-                        className="delete-btn"
-                        onClick={() => deleteTodo(data.id)}
-                      >
+                    <td colSpan={3}>
+                      <button className="delete-btn" onClick={modalHandler}>
                         Delete
                       </button>
                     </td>
