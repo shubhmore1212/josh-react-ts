@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 interface IProps {
   isOpen: boolean;
   title: string;
@@ -7,9 +9,9 @@ interface IProps {
   btn1Handler: () => void;
   btn2Handler: () => void;
 }
-const Modal = (props: IProps) => {
+const Modal = (props: IProps): ReactElement => {
   const { isOpen, title, body, btn1, btn2, btn1Handler, btn2Handler } = props;
-  
+
   return (
     <>
       {isOpen && (

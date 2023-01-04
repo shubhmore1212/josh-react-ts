@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
   BrowserRouter as Router,
   Navigate,
@@ -8,7 +8,7 @@ import {
 import { ROUTES } from "./appContants";
 
 import TodoContainer from "./Modules/DisplayTodo";
-import AddTodoContainer from "./Modules/AddTodo"
+import AddTodoContainer from "./Modules/AddTodo";
 import DisplayTaskContainer from "./Modules/DisplayTask";
 
 const routes = [
@@ -23,17 +23,17 @@ const routes = [
   {
     path: ROUTES.ADD,
     component: AddTodoContainer,
-  }
+  },
 ];
 
-const RouteComponent = () => {
+const RouteComponent = (): ReactElement => {
   return (
     <Router>
       <Routes>
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={<route.component />} />
         ))}
-        <Route path="*" element={<Navigate to={ROUTES.HOME} replace/>}/>
+        <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
       </Routes>
     </Router>
   );
