@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 interface IProps {
@@ -8,9 +9,9 @@ interface IProps {
   markTodoCompleted: (id: number, completed: boolean) => void;
 }
 
-const TodoListItem: React.FC<IProps> = (props) => {
-  const {id,title,completed,markTodoCompleted}=props;
-  
+const TodoListItem: React.FC<IProps> = (props): ReactElement => {
+  const { id, title, completed, markTodoCompleted } = props;
+
   return (
     <div className="show-list">
       <li>

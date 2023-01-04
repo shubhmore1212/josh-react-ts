@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useState } from "react";
 
 import ToDoComponent from "./components";
@@ -7,7 +7,7 @@ import { useFetch } from "../../CustomHooks/useFetch";
 import { ToDoData } from "../../data/types/types";
 import { TODO_URL } from "../../utils/constant";
 
-const TodoContainer = () => {
+const TodoContainer = (): ReactElement => {
   const [todos, setTodos] = useState<ToDoData[]>([]);
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
   const { data, loading, error } = useFetch();

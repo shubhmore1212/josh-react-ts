@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 import AddTodoButton from "./AddTodoButton";
 import TodoFilter from "./TodoFilter";
@@ -16,7 +16,7 @@ interface IProps {
   error: string;
 }
 
-const ToDoComponent: React.FC<IProps> = (props) => {
+const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
   const {
     showCompleted,
     statusHandler,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 import TodoListItem from "./TodoListItem";
 
@@ -9,8 +9,9 @@ interface IProps {
   markTodoCompleted: (id: number, completed: boolean) => void;
 }
 
-const TodoList: React.FC<IProps> = (props) => {
-  const {todos,markTodoCompleted}=props;
+const TodoList: React.FC<IProps> = (props): ReactElement => {
+  const { todos, markTodoCompleted } = props;
+  console.log("Todo List");
   
   return (
     <div className="list">

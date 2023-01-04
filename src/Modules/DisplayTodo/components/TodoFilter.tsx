@@ -1,12 +1,13 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface IProps {
   showCompleted: boolean;
-  statusHandler:()=>void
+  statusHandler: () => void;
 }
 
-const TodoFilter: React.FC<IProps> = (props) => {
-  const {showCompleted,statusHandler} = props
+const TodoFilter: React.FC<IProps> = (props): ReactElement => {
+  const { showCompleted, statusHandler } = props;
+  console.log("Todo Filter");
   
   return (
     <div className="show-completed-filter">

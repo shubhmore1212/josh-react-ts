@@ -1,9 +1,11 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 import { ROUTES } from "../../../appContants";
 
-const AddTodoButton = () => {
+const AddTodoButton = (): ReactElement => {
+  console.log("Add To Do Btn");
+  
   return (
     <div className="d-flex">
       <Link to={ROUTES.ADD}>
