@@ -11,8 +11,7 @@ interface IProps {
 
 const TodoList: React.FC<IProps> = (props): ReactElement => {
   const { todos, markTodoCompleted } = props;
-  console.log("Todo List");
-  
+ 
   return (
     <div className="list">
       <ul>

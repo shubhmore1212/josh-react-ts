@@ -7,8 +7,7 @@ interface IProps {
 
 const TodoFilter: React.FC<IProps> = (props): ReactElement => {
   const { showCompleted, statusHandler } = props;
-  console.log("Todo Filter");
-  
+
   return (
     <div className="show-completed-filter">
       <input
