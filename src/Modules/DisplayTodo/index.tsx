@@ -5,11 +5,12 @@ import ToDoComponent from "./components";
 import { useFetch } from "../../CustomHooks/useFetch";
 
 import { ToDoData } from "../../data/types/types";
+import { TODO_URL } from "../../utils/constant";
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<ToDoData[]>([]);
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
-  const { data, loading, error } = useFetch(process.env.REACT_APP_TODO_URL);
+  const { data, loading, error } = useFetch(TODO_URL);
 
   useEffect(() => {
     if (!!data) setTodos(data);
@@ -24,7 +25,7 @@ const TodoContainer = () => {
       todos.map((todo) => {
         if (todo.id === id) {
           let tempObj = { ...todo, completed: completed };
-          fetch(`${process.env.REACT_APP_TODO_URL}/${id}`, {
+          fetch(`${TODO_URL}/${id}`, {
             method: "PATCH",
             mode: "cors",
             headers: {
