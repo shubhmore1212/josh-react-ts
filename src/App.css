@@ -60,6 +60,10 @@ input.text {
   font-size: 20px;
 }
 
+#disable-input{
+  background: rgba(181, 178, 178, 0.669);
+}
+
 .add-button {
   background-color: rgb(246, 162, 67);
   border-color: rgb(14, 14, 14);
@@ -94,10 +98,10 @@ input.text {
   font-weight: bold;
 }
 
-.delete-btn{
-  height:35px;
-  width:90px;
-  color:#f5eeee;
+.delete-btn {
+  height: 35px;
+  width: 90px;
+  color: #f5eeee;
   background-color: crimson;
   font-size: 20px;
   font-weight: bold;
@@ -133,23 +137,6 @@ input.text {
   color: rgba(246, 139, 16, 0.8);
 }
 
-.add-form {
-  margin: 25%;
-  background: #fff;
-  width: 50%;
-  margin: 100px auto;
-  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-}
-
-.add-form-table {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 form {
   overflow: hidden;
   margin-top: 5%;
@@ -157,12 +144,12 @@ form {
 }
 
 form label {
-  width: 200px;
+  width: 150px;
   margin-right: 5%;
 }
 
 form div {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 form input {
@@ -187,6 +174,95 @@ form input[type="submit"] {
   padding: 0.75em 1em;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-left: 12%;
 }
+
+.add-task-form {
+  margin: 25%;
+  background: #fff;
+  width: 60%;
+  margin: 100px auto;
+  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
+  height: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.add-task-form label {
+  font-weight: bold;
+  display: flex;
+}
+
+.add-task-form input[type="text"],
+input[type="email"],
+input[type="date"],
+textarea {
+  display: block;
+  width: 400px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-task-form textarea {
+  width: 420px;
+}
+
+.modalBackground {
+  width: 100vw;
+  height:100vh;
+  background-color: rgba(200,200,200,0.8);
+  position:fixed;
+  top:0;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container{
+  width:500px;
+  height:250px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0,0,0,0.35) 0 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.modal-container .title{
+  display:inline-block;
+  text-align:center;
+  margin-top: 10px;
+}
+
+.modal-container .footer{
+  flex: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container .footer button{
+  width: 150px;
+  height: 45px;
+  margin: 10px;
+  border:none;
+  background-color: rgb(246, 162, 67);
+  color: white ;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
