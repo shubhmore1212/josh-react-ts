@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import { ROUTES } from "../../../appContants";
@@ -9,16 +9,31 @@ interface IProps {
   titleHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   body: string;
   bodyHandler: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  date: string;
+  dateHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 const AddTodoComponent: React.FC<IProps> = (props) => {
-  const {title,titleHandler,body,bodyHandler,handleSubmit}=props;
+  const {
+    title,
+    titleHandler,
+    body,
+    bodyHandler,
+    date,
+    dateHandler,
+    handleSubmit,
+  } = props;
   return (
-    <div className="add-form">
+    <div className="add-task-form">
+      <div className="cross-button">
+        <NavLink className="cross-button-link" to={ROUTES.HOME}>
+          X
+        </NavLink>
+      </div>
       <form onSubmit={handleSubmit}>
         <h2>Add Todo</h2>
-        <div>
+        <div className="form-control">
           <label htmlFor="title">Task:</label>
           <input
             type="text"
@@ -28,26 +43,29 @@ const AddTodoComponent: React.FC<IProps> = (props) => {
           />
           <br />
         </div>
-        <div>
-          <label htmlFor="body">Details:</label>
-          <textarea
-            name="body"
-            value={body}
-            onChange={bodyHandler}
-          />
+        <div className="form-control">
+          <label htmlFor="due-date">Due Date:</label>
+          <input type="date" name="date" value={date} onChange={dateHandler} />
           <br />
         </div>
-        <div>
+        <div className="form-control">
+          <label htmlFor="body">Details:</label>
+          <textarea name="body" value={body} onChange={bodyHandler} />
+          <br />
+        </div>
+        <div className="form-control">
           <label htmlFor="completed">Status:</label>
-          <input type="text" defaultValue={TASK_STATE.PENDING} disabled />
+          <input
+            id="disable-input"
+            className="disable-input"
+            type="text"
+            defaultValue={TASK_STATE.PENDING}
+            disabled
+          />
           <br />
         </div>
         <input type="submit" value="Add Todo" />
       </form>
-      <NavLink
-        className="link-home"
-        to={ROUTES.HOME}
-      >{`<< Go to ToDo-Page`}</NavLink>
     </div>
   );
 };

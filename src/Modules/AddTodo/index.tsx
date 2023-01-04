@@ -1,35 +1,48 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AddTodoComponent from "./components";
+import Modal from "../../Shared/components/Modal";
+
+import { ROUTES } from "../../appContants";
+import { TODO_URL } from "../../utils/constant";
 
 const AddTodoContainer = () => {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title?.trim() !== "" && body?.trim() !== "") {
-      let resData = await fetch(process.env.REACT_APP_TODO_URL as string);
+      let resData = await fetch(TODO_URL);
       let res = await resData.json();
       let newID = res.length ? res[res.length - 1]["id"] + 1 : 1;
       let tempObj = {
         id: newID,
         title,
         body,
+        date,
         completed: false,
       };
-      await fetch(process.env.REACT_APP_TODO_URL as string, {
+      await fetch(TODO_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(tempObj),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          setTitle("");
+          setBody("");
+          setDate("");
+          setOpenModal(true);
+          return res.json();
+        })
         .catch((err) => console.log(err.message));
     }
-    setTitle("");
-    setBody("");
   };
 
   const titleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,14 +53,38 @@ const AddTodoContainer = () => {
     setBody(e.target.value);
   };
 
+  const dateHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
+
+  const modalHandler = () => {
+    setOpenModal(!openModal);
+  };
+  const navigateHome = () => {
+    navigate(ROUTES.HOME);
+  };
+
   return (
-    <AddTodoComponent
-      title={title}
-      titleHandler={titleHandler}
-      body={body}
-      bodyHandler={bodyHandler}
-      handleSubmit={handleSubmit}
-    />
+    <>
+      <AddTodoComponent
+        title={title}
+        titleHandler={titleHandler}
+        body={body}
+        bodyHandler={bodyHandler}
+        date={date}
+        dateHandler={dateHandler}
+        handleSubmit={handleSubmit}
+      />
+      <Modal
+        isOpen={openModal}
+        title="Hello Planner!"
+        body="Task Added Successfully"
+        btn1="Show List"
+        btn2="Add More..."
+        btn1Handler={navigateHome}
+        btn2Handler={modalHandler}
+      />
+    </>
   );
 };
 
