@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import DisplayTaskComponent from "./components";
@@ -6,10 +6,11 @@ import { useFetch } from "../../CustomHooks/useFetch";
 import Modal from "../../Shared/components/Modal";
 
 import { ROUTES } from "../../appContants";
-import { TASK_STATE } from "../../constant";
+import { SelectChangeEvent, TASK_STATE } from "../../constant";
 import { TODO_URL } from "../../utils/constant";
+import { ReactElement } from "react";
 
-const DisplayTaskContainer = () => {
+const DisplayTaskContainer = (): ReactElement => {
   const { id } = useParams();
   const { data, loading, error } = useFetch(`${id}`);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const DisplayTaskContainer = () => {
     navigate(ROUTES.HOME);
   };
 
-  const markTodoCompleted = (e: ChangeEvent<HTMLSelectElement>) => {
+  const markTodoCompleted = (e: SelectChangeEvent) => {
     let tempObj = {
       ...data,
       completed: e.target.value === TASK_STATE.COMPLETED,
@@ -45,16 +46,12 @@ const DisplayTaskContainer = () => {
       .catch((err) => err);
   };
 
-  const modalHandler = () => {
-    setOpenModal(!openModal);
-  };
-
   const btn1Handler = () => {
     deleteTodo(data.id);
   };
 
   const btn2Handler = () => {
-    modalHandler();
+    setOpenModal(!openModal);
   };
 
   return (
@@ -73,7 +70,7 @@ const DisplayTaskContainer = () => {
         loading={loading}
         error={error}
         markTodoCompleted={markTodoCompleted}
-        modalHandler={modalHandler}
+        modalHandler={btn2Handler}
       />
     </>
   );

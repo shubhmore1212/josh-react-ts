@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
 import Loader from "../../../Shared/components/Loader";
@@ -6,17 +6,17 @@ import Loader from "../../../Shared/components/Loader";
 import { ToDoData } from "../../../data/types/types";
 
 import { ROUTES } from "../../../appContants";
-import { TASK_STATE } from "../../../constant";
+import { SelectChangeEvent, TASK_STATE } from "../../../constant";
 
 interface IProps {
   data: ToDoData;
   loading: boolean;
   error: string;
-  markTodoCompleted: (e: ChangeEvent<HTMLSelectElement>) => void;
+  markTodoCompleted: (e: SelectChangeEvent) => void;
   modalHandler: () => void;
 }
 
-const DisplayTaskComponent: React.FC<IProps> = (props) => {
+const DisplayTaskComponent: React.FC<IProps> = (props): ReactElement => {
   const { data, loading, error, markTodoCompleted, modalHandler } = props;
   const { COMPLETED, PENDING } = TASK_STATE;
 
