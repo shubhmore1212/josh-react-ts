@@ -24,6 +24,7 @@ const AddTodoComponent: React.FC<IProps> = (props) => {
     dateHandler,
     handleSubmit,
   } = props;
+
   return (
     <div className="add-task-form">
       <div className="cross-button">
@@ -41,17 +42,14 @@ const AddTodoComponent: React.FC<IProps> = (props) => {
             value={title}
             onChange={titleHandler}
           />
-          <br />
         </div>
         <div className="form-control">
           <label htmlFor="due-date">Due Date:</label>
           <input type="date" name="date" value={date} onChange={dateHandler} />
-          <br />
         </div>
         <div className="form-control">
           <label htmlFor="body">Details:</label>
           <textarea name="body" value={body} onChange={bodyHandler} />
-          <br />
         </div>
         <div className="form-control">
           <label htmlFor="completed">Status:</label>
@@ -62,7 +60,6 @@ const AddTodoComponent: React.FC<IProps> = (props) => {
             defaultValue={TASK_STATE.PENDING}
             disabled
           />
-          <br />
         </div>
         <input type="submit" value="Add Todo" />
       </form>

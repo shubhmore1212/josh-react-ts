@@ -57,15 +57,25 @@ const AddTodoContainer = () => {
     setDate(e.target.value);
   };
 
-  const modalHandler = () => {
-    setOpenModal(!openModal);
-  };
-  const navigateHome = () => {
+  const btn1Handler=()=>{
     navigate(ROUTES.HOME);
-  };
+  }
+
+  const btn2Handler=()=>{
+    setOpenModal(!openModal);
+  }
 
   return (
     <>
+      <Modal
+        isOpen={openModal}
+        title="Hello Planner!"
+        body="Task Added Successfully"
+        btn1="Show List"
+        btn2="Add More..."
+        btn1Handler={btn1Handler}
+        btn2Handler={btn2Handler}
+      />
       <AddTodoComponent
         title={title}
         titleHandler={titleHandler}
@@ -74,15 +84,6 @@ const AddTodoContainer = () => {
         date={date}
         dateHandler={dateHandler}
         handleSubmit={handleSubmit}
-      />
-      <Modal
-        isOpen={openModal}
-        title="Hello Planner!"
-        body="Task Added Successfully"
-        btn1="Show List"
-        btn2="Add More..."
-        btn1Handler={navigateHome}
-        btn2Handler={modalHandler}
       />
     </>
   );
