@@ -1,20 +1,25 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
 import { ROUTES } from "../../../appContants";
-import { TASK_STATE } from "../../../constant";
+import {
+  FormSubmitEvent,
+  InputChangeEvent,
+  TASK_STATE,
+  TextAreaChangeEvent,
+} from "../../../constant";
 
 interface IProps {
   title: string;
-  titleHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  titleHandler: (e: InputChangeEvent) => void;
   body: string;
-  bodyHandler: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  bodyHandler: (e: TextAreaChangeEvent) => void;
   date: string;
-  dateHandler: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  dateHandler: (e: InputChangeEvent) => void;
+  handleSubmit: (e: FormSubmitEvent) => void;
 }
 
-const AddTodoComponent: React.FC<IProps> = (props) => {
+const AddTodoComponent: React.FC<IProps> = (props): ReactElement => {
   const {
     title,
     titleHandler,

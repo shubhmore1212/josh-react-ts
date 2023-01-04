@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AddTodoComponent from "./components";
@@ -6,15 +6,20 @@ import Modal from "../../Shared/components/Modal";
 
 import { ROUTES } from "../../appContants";
 import { TODO_URL } from "../../utils/constant";
+import {
+  FormSubmitEvent,
+  InputChangeEvent,
+  TextAreaChangeEvent,
+} from "../../constant";
 
-const AddTodoContainer = () => {
+const AddTodoContainer = (): ReactElement => {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormSubmitEvent) => {
     e.preventDefault();
     if (title?.trim() !== "" && body?.trim() !== "") {
       let resData = await fetch(TODO_URL);
@@ -44,25 +49,25 @@ const AddTodoContainer = () => {
     }
   };
 
-  const titleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const titleHandler = (e: InputChangeEvent) => {
     setTitle(e.target.value);
   };
 
-  const bodyHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const bodyHandler = (e: TextAreaChangeEvent) => {
     setBody(e.target.value);
   };
 
-  const dateHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const dateHandler = (e: InputChangeEvent) => {
     setDate(e.target.value);
   };
 
-  const btn1Handler=()=>{
+  const btn1Handler = () => {
     navigate(ROUTES.HOME);
-  }
+  };
 
-  const btn2Handler=()=>{
+  const btn2Handler = () => {
     setOpenModal(!openModal);
-  }
+  };
 
   return (
     <>
