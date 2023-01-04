@@ -1,20 +1,6 @@
 {
   "todo": [
     {
-      "id": 16,
-      "title": "dcxjhb",
-      "body": "saxsa",
-      "date": "2023-01-01",
-      "completed": false
-    },
-    {
-      "id": 17,
-      "title": "ad,kjnc",
-      "body": "ascx",
-      "date": "2023-01-04",
-      "completed": false
-    },
-    {
       "id": 18,
       "title": "sdkjv",
       "body": "adv",
@@ -68,6 +54,13 @@
       "title": "rosh",
       "body": "ds,c.,",
       "date": "2023-01-06",
+      "completed": false
+    },
+    {
+      "id": 28,
+      "title": "hi",
+      "body": "good",
+      "date": "2023-01-05",
       "completed": false
     }
   ]
