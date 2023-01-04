@@ -10,7 +10,7 @@ import { TODO_URL } from "../../utils/constant";
 const TodoContainer = () => {
   const [todos, setTodos] = useState<ToDoData[]>([]);
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
-  const { data, loading, error } = useFetch(TODO_URL);
+  const { data, loading, error } = useFetch();
 
   useEffect(() => {
     if (!!data) setTodos(data);
@@ -34,7 +34,7 @@ const TodoContainer = () => {
             body: JSON.stringify(tempObj),
           })
             .then((res) => res.json())
-            .catch((err) => console.log(err));
+            .catch((err) => err);
           return tempObj;
         } else {
           return todo;

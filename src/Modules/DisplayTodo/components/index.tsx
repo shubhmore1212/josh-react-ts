@@ -25,23 +25,20 @@ const ToDoComponent: React.FC<IProps> = (props) => {
     loading,
     error,
   } = props;
+
+  if (loading) return <Loader />;
+
   return (
-    <>
+    <div>
       <h1>To Do</h1>
       <AddTodoButton />
       <TodoFilter showCompleted={showCompleted} statusHandler={statusHandler} />
-      {loading ? (
-        <Loader />
+      {!error ? (
+        <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
       ) : (
-        <>
-          {!error ? (
-            <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
-          ) : (
-            <div className="error-msg">{error}</div>
-          )}
-        </>
+        <div className="error-msg">{error}</div>
       )}
-    </>
+    </div>
   );
 };
 
