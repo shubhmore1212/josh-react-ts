@@ -1,38 +1,71 @@
 import React, { ReactElement } from "react";
 
 import AddTodoButton from "./AddTodoButton";
-import TodoFilter from "./TodoFilter";
 import TodoList from "./TodoList";
 import Loader from "../../../Shared/components/Loader";
 
+import SelectBox from "./SelectBox";
+import SearchBox from "./SearchBox";
+
 import { ToDoData } from "../../../data/types/types";
+import {
+  InputChangeEvent,
+  SelectChangeEvent,
+  TASK_STATE,
+} from "../../../constant";
 
 interface IProps {
-  showCompleted: boolean;
-  statusHandler: () => void;
   todos: ToDoData[];
   markTodoCompleted: (id: number, showCompleted: boolean) => void;
   loading: boolean;
   error: string;
+  count: number;
+  setCount: (count: number) => void;
+  searchHandler: (e: InputChangeEvent) => void;
+  statusListHandler: (e: SelectChangeEvent) => void;
+  sortHandler: (e: SelectChangeEvent) => void;
 }
 
 const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
   const {
-    showCompleted,
-    statusHandler,
     todos,
     markTodoCompleted,
     loading,
     error,
+    searchHandler,
+    statusListHandler,
+    sortHandler,
   } = props;
+  const { COMPLETED, PENDING } = TASK_STATE;
+  const statusOptions = ["All", COMPLETED, PENDING];
+  const sortOptions = ["Select One", "A-Z", "Z-A"];
 
   if (loading) return <Loader />;
 
   return (
     <div>
-      <h1>To Do</h1>
+      <div className="display-logo-search">
+        <div className="logo">
+          <h1>To Do</h1>
+        </div>
+        <div className="search-add">
+          <SearchBox searchHandler={searchHandler} />
+        </div>
+      </div>
+      <div className="display-todo-feature">
+        <div className="status-feature">
+          <label>Status</label>
+          <SelectBox
+            selectHandler={statusListHandler}
+            options={statusOptions}
+          />
+        </div>
+        <div className="sort-feature">
+          <label>Sort Order</label>
+          <SelectBox selectHandler={sortHandler} options={sortOptions} />
+        </div>
+      </div>
       <AddTodoButton />
-      <TodoFilter showCompleted={showCompleted} statusHandler={statusHandler} />
       {!error ? (
         <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
       ) : (
