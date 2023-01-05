@@ -4,8 +4,8 @@ import AddTodoButton from "./AddTodoButton";
 import TodoList from "./TodoList";
 import Loader from "../../../Shared/components/Loader";
 
-import SelectBox from "./SelectBox";
-import SearchBox from "./SearchBox";
+import SearchBox from "../../../Shared/components/SearchBox";
+import SelectBox from "../../../Shared/components/SelectBox";
 
 import { ToDoData } from "../../../data/types/types";
 import {
@@ -19,8 +19,6 @@ interface IProps {
   markTodoCompleted: (id: number, showCompleted: boolean) => void;
   loading: boolean;
   error: string;
-  count: number;
-  setCount: (count: number) => void;
   searchHandler: (e: InputChangeEvent) => void;
   statusListHandler: (e: SelectChangeEvent) => void;
   sortHandler: (e: SelectChangeEvent) => void;
