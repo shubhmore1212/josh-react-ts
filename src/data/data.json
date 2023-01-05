@@ -12,21 +12,21 @@
       "title": "project",
       "body": "description",
       "date": "2023-01-20",
-      "completed": false
+      "completed": true
     },
     {
       "id": 20,
       "title": "two",
       "body": "test 2",
       "date": "2020-09-09",
-      "completed": false
+      "completed": true
     },
     {
       "id": 23,
       "title": "kesdjvn",
       "body": "amsdnv ",
       "date": "2023-01-05",
-      "completed": false
+      "completed": true
     },
     {
       "id": 24,
