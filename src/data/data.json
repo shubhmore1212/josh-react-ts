@@ -12,7 +12,7 @@
       "title": "project",
       "body": "description",
       "date": "2023-01-20",
-      "completed": true
+      "completed": false
     },
     {
       "id": 20,
@@ -60,6 +60,13 @@
       "id": 28,
       "title": "hi",
       "body": "good",
+      "date": "2023-01-05",
+      "completed": false
+    },
+    {
+      "id": 29,
+      "title": "kes",
+      "body": "cedn",
       "date": "2023-01-05",
       "completed": false
     }
