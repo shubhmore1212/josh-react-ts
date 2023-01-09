@@ -3,6 +3,7 @@ import React, {
   useState,
   ReactElement,
   useEffect,
+  useMemo,
 } from "react";
 
 import ToDoComponent from "./components";
@@ -56,25 +57,40 @@ const TodoContainer = (): ReactElement => {
     [markStatus]
   );
 
-  const statusListHandler = (e: SelectChangeEvent) => {
-    setStatusControl(e.target.value);
-  };
+  const statusListHandler = useCallback(
+    (e: SelectChangeEvent) => {
+      setStatusControl(e.target.value);
+    },
+    [statusControl]
+  );
 
-  const searchHandler = (e: InputChangeEvent) => {
-    setSearchInput(e.target.value);
-  };
+  const searchHandler = useCallback(
+    (e: InputChangeEvent) => {
+      setSearchInput(e.target.value);
+    },
+    [searchInput]
+  );
 
-  const sortHandler = (e: SelectChangeEvent) => {
-    setSortControl(e.target.value);
-  };
+  const sortHandler = useCallback(
+    (e: SelectChangeEvent) => {
+      setSortControl(e.target.value);
+    },
+    [sortControl]
+  );
 
   displayTodos = displayTodos.filter((todo) =>
     todo.title.includes(searchInput)
   );
 
-  displayTodos = filterByStatus(statusControl, displayTodos);
+  displayTodos = useMemo(
+    () => filterByStatus(statusControl, displayTodos),
+    [statusControl, displayTodos]
+  );
 
-  displayTodos = sortByTitle(sortControl, displayTodos);
+  displayTodos = useMemo(
+    () => sortByTitle(sortControl, displayTodos),
+    [sortControl, displayTodos]
+  );
 
   return (
     <ToDoComponent
