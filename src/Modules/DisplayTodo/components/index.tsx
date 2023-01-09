@@ -8,6 +8,7 @@ import SearchBox from "../../../Shared/components/SearchBox";
 import SelectBox from "../../../Shared/components/SelectBox";
 
 import { ToDoData } from "../../../data/types/types";
+
 import {
   InputChangeEvent,
   SelectChangeEvent,
@@ -24,6 +25,10 @@ interface IProps {
   sortHandler: (e: SelectChangeEvent) => void;
 }
 
+const { COMPLETED, PENDING } = TASK_STATE;
+const statusOptions = ["All", COMPLETED, PENDING];
+const sortOptions = ["Select One", "A-Z", "Z-A"];
+
 const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
   const {
     todos,
@@ -34,9 +39,6 @@ const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
     statusListHandler,
     sortHandler,
   } = props;
-  const { COMPLETED, PENDING } = TASK_STATE;
-  const statusOptions = ["All", COMPLETED, PENDING];
-  const sortOptions = ["Select One", "A-Z", "Z-A"];
 
   if (loading) return <Loader />;
 
