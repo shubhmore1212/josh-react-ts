@@ -13,7 +13,7 @@ const SelectBox = (props: IProps): React.ReactElement => {
   return (
     <div className="select-box-container">
       <select name="select-input" id="select-input" onChange={selectHandler}>
-        {options.map((option: any) => (
+        {options.map((option: string) => (
           <option value={option} key={option}>
             {option}
           </option>
