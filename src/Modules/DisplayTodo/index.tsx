@@ -1,13 +1,17 @@
-import React, { useCallback, useState, ReactElement, useEffect } from "react";
+import React, {
+  useCallback,
+  useState,
+  ReactElement,
+  useEffect,
+} from "react";
 
 import ToDoComponent from "./components";
 import { useFetch } from "../../CustomHooks/useFetch";
 
-import StatusController from "./components/StatusController";
-import SortController from "./components/SortController";
-
 import { ToDoData } from "../../data/types/types";
+
 import { TODO_URL } from "../../utils/constant";
+import { filterByStatus, sortByTitle } from "./utils";
 import { InputChangeEvent, SelectChangeEvent } from "../../constant";
 
 const TodoContainer = (): ReactElement => {
@@ -19,69 +23,58 @@ const TodoContainer = (): ReactElement => {
   let displayTodos = todos;
 
   useEffect(() => {
-    if (!!data) setTodos(data);
+    if (!!data) {
+      setTodos(data);
+    }
   }, [data]);
 
-  const markTodoCompleted = useCallback(
-    (id: number, completed: boolean) => {
-      setTodos(
-        todos.map((todo) => {
-          if (todo.id === id) {
-            let tempObj = { ...todo, completed: completed };
-            fetch(`${TODO_URL}/${id}`, {
-              method: "PATCH",
-              mode: "cors",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(tempObj),
-            })
-              .then((res) => res.json())
-              .catch((err) => err);
-            return tempObj;
-          } else {
-            return todo;
-          }
-        })
-      );
-    },
+  const markStatus = useCallback(
+    (id: number, completed: boolean): ToDoData[] =>
+      todos.map((todo) => {
+        if (todo.id === id) {
+          let tempObj = { ...todo, completed: completed };
+          fetch(`${TODO_URL}/${id}`, {
+            method: "PATCH",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(tempObj),
+          })
+            .then((res) => res.json())
+            .catch((err) => err);
+          return tempObj;
+        } else {
+          return todo;
+        }
+      }),
     [todos]
   );
 
-  const statusListHandler = useCallback(
-    (e: SelectChangeEvent) => {
-      setStatusControl(e.target.value);
-    },
-    [statusControl]
+  const markTodoCompleted = useCallback(
+    (id: number, completed: boolean) => setTodos(markStatus(id, completed)),
+    [markStatus]
   );
 
-  displayTodos = StatusController({
-    control: statusControl,
-    data: displayTodos,
-  });
+  const statusListHandler = (e: SelectChangeEvent) => {
+    setStatusControl(e.target.value);
+  };
 
-  const searchHandler = useCallback(
-    (e: InputChangeEvent) => {
-      setSearchInput(e.target.value);
-    },
-    [searchInput]
-  );
+  const searchHandler = (e: InputChangeEvent) => {
+    setSearchInput(e.target.value);
+  };
+
+  const sortHandler = (e: SelectChangeEvent) => {
+    setSortControl(e.target.value);
+  };
 
   displayTodos = displayTodos.filter((todo) =>
     todo.title.includes(searchInput)
   );
 
-  const sortHandler = useCallback(
-    (e: SelectChangeEvent) => {
-      setSortControl(e.target.value);
-    },
-    [statusControl]
-  );
+  displayTodos = filterByStatus(statusControl, displayTodos);
 
-  displayTodos = SortController({
-    control: sortControl,
-    data: displayTodos,
-  });
+  displayTodos = sortByTitle(sortControl, displayTodos);
 
   return (
     <ToDoComponent
