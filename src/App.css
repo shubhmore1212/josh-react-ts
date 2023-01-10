@@ -6,12 +6,18 @@
 }
 
 .App {
-  text-align: center;
   font-size: 20px;
 }
 
+.logo {
+  position: absolute;
+  left: 40vw;
+}
+
 .loading-spinner {
-  padding-top: 4cm;
+  position: absolute;
+  top:40vh;
+  left:42vw;
 }
 
 .error-msg {
@@ -28,9 +34,14 @@ input[type="checkbox"] {
   accent-color: rgb(246, 162, 67);
 }
 
+.list {
+  position: absolute;
+  top: 24%;
+  left: 36vw;
+}
+
 .show-list {
   display: flex;
-  padding-left: 40vw;
   padding-top: 0.5rem;
 }
 
@@ -60,8 +71,17 @@ input.text {
   font-size: 20px;
 }
 
-#disable-input{
+#disable-input {
   background: rgba(181, 178, 178, 0.669);
+}
+
+.search-add {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  position: absolute;
+  top: 5%;
+  right: 10%;
 }
 
 .add-button {
@@ -71,6 +91,7 @@ input.text {
   border-radius: 2cm;
   height: 35px;
   font-size: 18px;
+  font-weight: bold;
 }
 
 .show-completed-filter {
@@ -221,48 +242,88 @@ textarea {
 
 .modalBackground {
   width: 100vw;
-  height:100vh;
-  background-color: rgba(200,200,200,0.8);
-  position:fixed;
-  top:0;
-  display:flex;
+  height: 100vh;
+  background-color: rgba(200, 200, 200, 0.8);
+  position: fixed;
+  top: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-container{
-  width:500px;
-  height:250px;
+.modal-container {
+  width: 500px;
+  height: 250px;
   border-radius: 12px;
   background-color: white;
-  box-shadow: rgba(0,0,0,0.35) 0 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   display: flex;
   flex-direction: column;
   padding: 25px;
 }
 
-.modal-container .title{
-  display:inline-block;
-  text-align:center;
+.modal-container .title {
+  display: inline-block;
+  text-align: center;
   margin-top: 10px;
 }
 
-.modal-container .footer{
+.modal-container .footer {
   flex: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-container .footer button{
+.modal-container .footer button {
   width: 150px;
   height: 45px;
   margin: 10px;
-  border:none;
+  border: none;
   background-color: rgb(246, 162, 67);
-  color: white ;
+  color: white;
   border-radius: 8px;
   font-size: 20px;
   cursor: pointer;
 }
 
+.search-box {
+  height: 32px;
+  border-radius: 2cm;
+  text-align: center;
+  font-size: 16px;
+}
+
+#select-input {
+  height: 32px;
+  width:150px;
+  border-width: 0.5px;
+  border-radius: 2cm;
+  text-align: center;
+  font-size: 16px;
+}
+
+.display-todo-feature {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  position: absolute;
+  left: 10%;
+  top: 15%;
+}
+
+.status-feature {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sort-feature {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.d-flex {
+  position: absolute;
+  top: 14.5%;
+  right: 10%;
+}
