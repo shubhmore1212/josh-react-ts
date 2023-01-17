@@ -1,58 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, ReactElement } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import DisplayTaskComponent from "./components";
-import { useFetch } from "../../CustomHooks/useFetch";
 import Modal from "../../Shared/components/Modal";
+import Loader from "../../Shared/components/Loader";
+
+import {
+  removeTodo,
+  updateTodo,
+  fetchTodo,
+} from "../../services/todos.services";
 
 import { ROUTES } from "../../appContants";
 import { SelectChangeEvent, TASK_STATE } from "../../constant";
-import { TODO_URL } from "../../utils/constant";
-import { ReactElement } from "react";
 
 const DisplayTaskContainer = (): ReactElement => {
   const { id } = useParams();
-  const { data, loading, error } = useFetch(`${id}`);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError } = useQuery("todo", () => fetchTodo(id));
 
-  const deleteTodo = (todoId: number) => {
-    fetch(`${TODO_URL}/${todoId}`, {
-      method: "Delete",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .catch((err) => err);
+  const deleteTodo = (todoId?: number) => {
+    removeTodo(todoId);
     navigate(ROUTES.HOME);
   };
+
+  const { mutate } = useMutation(updateTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
 
   const markTodoCompleted = (e: SelectChangeEvent) => {
     let tempObj = {
       ...data,
-      completed: e.target.value === TASK_STATE.COMPLETED,
+      completed: e.currentTarget.value === TASK_STATE.COMPLETED,
     };
-    fetch(`${TODO_URL}/${id}`, {
-      method: "PATCH",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tempObj),
-    })
-      .then((res) => res.json())
-      .catch((err) => err);
+    mutate({ id: tempObj.id, body: tempObj });
   };
 
   const btn1Handler = () => {
-    deleteTodo(data.id);
+    deleteTodo(data?.id);
   };
 
   const btn2Handler = () => {
     setOpenModal(!openModal);
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <div>Error..</div>;
+  }
 
   return (
     <>
@@ -67,8 +70,6 @@ const DisplayTaskContainer = (): ReactElement => {
       />
       <DisplayTaskComponent
         data={data}
-        loading={loading}
-        error={error}
         markTodoCompleted={markTodoCompleted}
         modalHandler={btn2Handler}
       />
