@@ -3,7 +3,7 @@ import React from "react";
 import { SelectChangeEvent } from "../../constant";
 
 interface optionType {
-  key: string | undefined;
+  key?: string;
   value: string;
 }
 interface IProps {

@@ -11,7 +11,7 @@ import { ToDoData } from "../../../data/types/types";
 import { InputChangeEvent, TASK_STATE } from "../../../constant";
 
 interface IProps {
-  todos: ToDoData[] | undefined;
+  todos?: ToDoData[];
   markTodoCompleted: (id: number, showCompleted: boolean) => void;
   searchInput: string;
   searchHandler: (e: InputChangeEvent) => void;
