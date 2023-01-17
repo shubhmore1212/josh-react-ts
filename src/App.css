@@ -128,6 +128,8 @@ input.text {
   font-weight: bold;
   border: none;
   border-radius: 20px;
+  position: relative;
+  left: 70px;
 }
 
 .display-table {
