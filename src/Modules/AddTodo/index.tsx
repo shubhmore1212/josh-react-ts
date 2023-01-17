@@ -1,11 +1,13 @@
 import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
 
 import AddTodoComponent from "./components";
 import Modal from "../../Shared/components/Modal";
 
+import { addTodo } from "../../services/todos.services";
+
 import { ROUTES } from "../../appContants";
-import { TODO_URL } from "../../utils/constant";
 import {
   FormSubmitEvent,
   InputChangeEvent,
@@ -18,34 +20,31 @@ const AddTodoContainer = (): ReactElement => {
   const [date, setDate] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate, error } = useMutation(addTodo, {
+    onSuccess: () => {
+      setTitle("");
+      setBody("");
+      setDate("");
+      queryClient.invalidateQueries("todos");
+    },
+    onError: () => {
+      console.log(error);
+    },
+  });
 
   const handleSubmit = async (e: FormSubmitEvent) => {
     e.preventDefault();
     if (title?.trim() !== "" && body?.trim() !== "") {
-      let resData = await fetch(TODO_URL);
-      let res = await resData.json();
-      let newID = res.length ? res[res.length - 1]["id"] + 1 : 1;
       let tempObj = {
-        id: newID,
         title,
         body,
         date,
         completed: false,
       };
-      await fetch(TODO_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(tempObj),
-      })
-        .then((res) => {
-          setTitle("");
-          setBody("");
-          setDate("");
-          setOpenModal(true);
-        })
-        .catch((err) => err.message);
+      mutate({ body: tempObj });
+      setOpenModal(true);
     }
   };
 
@@ -62,6 +61,7 @@ const AddTodoContainer = (): ReactElement => {
   };
 
   const btn1Handler = () => {
+    queryClient.invalidateQueries("todos");
     navigate(ROUTES.HOME);
   };
 
