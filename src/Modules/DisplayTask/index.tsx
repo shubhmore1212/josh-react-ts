@@ -36,7 +36,7 @@ const DisplayTaskContainer = (): ReactElement => {
   const markTodoCompleted = (e: SelectChangeEvent) => {
     let tempObj = {
       ...data,
-      completed: e.currentTarget.value === TASK_STATE.COMPLETED,
+      completed: e.target.value === TASK_STATE.COMPLETED,
     };
     mutate({ id: tempObj.id, body: tempObj });
   };
