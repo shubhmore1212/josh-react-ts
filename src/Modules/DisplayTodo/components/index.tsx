@@ -2,45 +2,64 @@ import React, { ReactElement } from "react";
 
 import AddTodoButton from "./AddTodoButton";
 import TodoList from "./TodoList";
-import Loader from "../../../Shared/components/Loader";
 
 import SearchBox from "../../../Shared/components/SearchBox";
 import SelectBox from "../../../Shared/components/SelectBox";
 
 import { ToDoData } from "../../../data/types/types";
 
-import {
-  InputChangeEvent,
-  SelectChangeEvent,
-  TASK_STATE,
-} from "../../../constant";
+import { InputChangeEvent, TASK_STATE } from "../../../constant";
 
 interface IProps {
-  todos: ToDoData[];
+  todos: ToDoData[] | undefined;
   markTodoCompleted: (id: number, showCompleted: boolean) => void;
-  loading: boolean;
-  error: string;
+  searchInput: string;
   searchHandler: (e: InputChangeEvent) => void;
-  statusListHandler: (e: SelectChangeEvent) => void;
-  sortHandler: (e: SelectChangeEvent) => void;
+  searchButtonHandler: (search: string) => void;
+  statusControl: string;
+  statusListHandler: (e: string) => void;
+  sortHandler: (e: string) => void;
+  pageNumber: number;
+  pageNumberHandler: (pageNumber: number) => void;
+  sortControl: string;
+  sortKey: string;
+  sortKeyHandler: (e: string) => void;
 }
 
 const { COMPLETED, PENDING } = TASK_STATE;
-const statusOptions = ["All", COMPLETED, PENDING];
-const sortOptions = ["Select One", "A-Z", "Z-A"];
+const statusOptions = [
+  { key: "All", value: "All" },
+  { key: COMPLETED, value: COMPLETED },
+  { key: PENDING, value: PENDING },
+];
+const sortOptions = [
+  { key: undefined, value: "Select One" },
+  { key: "asc", value: "A-Z" },
+  { key: "desc", value: "Z-A" },
+];
+const sortKeyOptions = [
+  { key: "id", value: "id" },
+  { key: "title", value: "title" },
+  { key: "body", value: "body" },
+  { key: "date", value: "date" },
+];
 
 const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
   const {
     todos,
     markTodoCompleted,
-    loading,
-    error,
+    searchInput,
     searchHandler,
+    searchButtonHandler,
+    statusControl,
     statusListHandler,
     sortHandler,
+    pageNumber,
+    pageNumberHandler,
+    sortControl,
+    sortKey,
+    sortKeyHandler,
   } = props;
-
-  if (loading) return <Loader />;
 
   return (
     <div>
@@ -49,28 +68,46 @@ const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
           <h1>To Do</h1>
         </div>
         <div className="search-add">
-          <SearchBox searchHandler={searchHandler} />
+          <SearchBox searchInput={searchInput} searchHandler={searchHandler} />
+          <button
+            className="add-button"
+            onClick={() => searchButtonHandler(searchInput)}
+          >
+            Search
+          </button>
         </div>
       </div>
       <div className="display-todo-feature">
         <div className="status-feature">
           <label>Status</label>
           <SelectBox
+            value={statusControl}
             selectHandler={statusListHandler}
             options={statusOptions}
           />
         </div>
         <div className="sort-feature">
+          <label>Sort By</label>
+          <SelectBox
+            value={sortKey}
+            selectHandler={sortKeyHandler}
+            options={sortKeyOptions}
+          />
           <label>Sort Order</label>
-          <SelectBox selectHandler={sortHandler} options={sortOptions} />
+          <SelectBox
+            value={sortControl}
+            selectHandler={sortHandler}
+            options={sortOptions}
+          />
         </div>
       </div>
       <AddTodoButton />
-      {!error ? (
-        <TodoList todos={todos} markTodoCompleted={markTodoCompleted} />
-      ) : (
-        <div className="error-msg">{error}</div>
-      )}
+      <TodoList
+        todos={todos}
+        pageNumber={pageNumber}
+        pageNumberHandler={pageNumberHandler}
+        markTodoCompleted={markTodoCompleted}
+      />
     </div>
   );
 };
