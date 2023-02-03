@@ -1,18 +1,24 @@
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
+import SelectBox from "../../../Shared/components/SelectBox";
+
 import { ToDoData } from "../../../data/types/types";
 
 import { ROUTES } from "../../../appContants";
-import { SelectChangeEvent, TASK_STATE } from "../../../constant";
+import { TASK_STATE } from "../../../constant";
 
 interface IProps {
-  data: ToDoData | undefined;
-  markTodoCompleted: (e: SelectChangeEvent) => void;
+  data: ToDoData;
+  markTodoCompleted: (status: string) => void;
   modalHandler: () => void;
 }
 
 const { COMPLETED, PENDING } = TASK_STATE;
+const statusOptions = [
+  { value: COMPLETED, key: COMPLETED },
+  { value: PENDING, key: PENDING },
+];
 
 const DisplayTaskComponent: React.FC<IProps> = (props): ReactElement => {
   const { data, markTodoCompleted, modalHandler } = props;
@@ -34,34 +40,32 @@ const DisplayTaskComponent: React.FC<IProps> = (props): ReactElement => {
           <tr>
             <th>ID</th>
             <td>:</td>
-            <td>{data?.id}</td>
+            <td>{data.id}</td>
           </tr>
           <tr>
             <th>Task</th>
             <td>:</td>
-            <td>{data?.title}</td>
+            <td>{data.title}</td>
           </tr>
           <tr>
-            <th>Body :</th>
+            <th>Body</th>
             <td>:</td>
-            <td>{data?.body}</td>
+            <td>{data.body}</td>
           </tr>
           <tr>
             <th>Date</th>
             <td>:</td>
-            <td>{data?.date}</td>
+            <td>{data.date}</td>
           </tr>
           <tr>
             <th>Status</th>
             <td>:</td>
             <td>
-              <select
-                defaultValue={data?.completed ? COMPLETED : PENDING}
-                onChange={markTodoCompleted}
-              >
-                <option value={COMPLETED}>{COMPLETED}</option>
-                <option value={PENDING}>{PENDING}</option>
-              </select>
+              <SelectBox
+                options={statusOptions}
+                value={data.completed ? COMPLETED : PENDING}
+                selectHandler={markTodoCompleted}
+              />
             </td>
           </tr>
           <tr>

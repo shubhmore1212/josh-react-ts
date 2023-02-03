@@ -1,42 +1,40 @@
 import React, { useState, ReactElement } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
 import DisplayTaskComponent from "./components";
 import Modal from "../../Shared/components/Modal";
 import Loader from "../../Shared/components/Loader";
 
-import {
-  removeTodo,
-  updateTodo,
-  fetchTodo,
-} from "../../services/todos.services";
+import { removeTodo } from "../../services/todos.services";
+import { useGetTodoById, useUpdateTodo } from "../../CustomHooks/QueryHooks";
 
 import { ROUTES } from "../../appContants";
-import { SelectChangeEvent, TASK_STATE } from "../../constant";
+import { RQ_KEY_TODO, RQ_KEY_TODOS, TASK_STATE } from "../../constant";
 
 const DisplayTaskContainer = (): ReactElement => {
   const { id } = useParams();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data, isLoading, isError } = useQuery("todo", () => fetchTodo(id));
+  const { data, isLoading, isError } = useGetTodoById({ id });
 
   const deleteTodo = (todoId?: number) => {
     removeTodo(todoId);
     navigate(ROUTES.HOME);
   };
 
-  const { mutate } = useMutation(updateTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
+  const onUpdateSuccess = () => {
+    queryClient.invalidateQueries(RQ_KEY_TODO);
+    queryClient.invalidateQueries(RQ_KEY_TODOS);
+  };
 
-  const markTodoCompleted = (e: SelectChangeEvent) => {
+  const { mutate } = useUpdateTodo({ onSuccess: onUpdateSuccess });
+
+  const markTodoCompleted = (status: string) => {
     let tempObj = {
       ...data,
-      completed: e.target.value === TASK_STATE.COMPLETED,
+      completed: status === TASK_STATE.COMPLETED,
     };
     mutate({ id: tempObj.id, body: tempObj });
   };
