@@ -5,6 +5,7 @@ import {
   PatchTodoResponse,
   DeleteTodoResponse,
   ToDoData,
+  ToDoPostData,
 } from "../data/types/types";
 import { DELETE, GET, PATCH, POST } from "./api";
 
@@ -19,7 +20,7 @@ export const fetchTodo = (id?: string): Promise<ToDoData> => {
 };
 
 export const addTodo = (data: {
-  body: { title: string; body: string; date: string; completed: boolean };
+  body: ToDoPostData;
 }): Promise<GetTodosResponse> => {
   return POST("/todo", { ...data.body });
 };

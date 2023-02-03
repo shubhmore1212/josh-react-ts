@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetTodoResponse, GetTodosParams, ToDoData } from "../data/types/types";
+import {  GetTodosParams } from "../data/types/types";
 
 const instance = axios.create({ baseURL: "http://localhost:8000" });
 
