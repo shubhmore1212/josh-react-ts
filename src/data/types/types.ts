@@ -6,6 +6,8 @@ export interface ToDoData {
   completed: boolean;
 }
 
+export type ToDoPostData = Partial<ToDoData>;
+
 export interface GetTodosParams {
   _page?: number;
   _limit?: number;
