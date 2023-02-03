@@ -1,67 +1,39 @@
 import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
 import AddTodoComponent from "./components";
 import Modal from "../../Shared/components/Modal";
 
-import { addTodo } from "../../services/todos.services";
+import { useAddTodo } from "../../CustomHooks/QueryHooks";
 
 import { ROUTES } from "../../appContants";
-import {
-  FormSubmitEvent,
-  InputChangeEvent,
-  TextAreaChangeEvent,
-} from "../../constant";
+import { RQ_KEY_TODOS } from "../../constant";
+import { ToDoPostData } from "../../data/types/types";
 
 const AddTodoContainer = (): ReactElement => {
-  const [title, setTitle] = useState<string>("");
-  const [body, setBody] = useState<string>("");
-  const [date, setDate] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate, error } = useMutation(addTodo, {
-    onSuccess: () => {
-      setTitle("");
-      setBody("");
-      setDate("");
-      queryClient.invalidateQueries("todos");
-    },
-    onError: () => {
-      console.log(error);
-    },
-  });
-
-  const handleSubmit = async (e: FormSubmitEvent) => {
-    e.preventDefault();
-    if (title?.trim() !== "" && body?.trim() !== "") {
-      let tempObj = {
-        title,
-        body,
-        date,
-        completed: false,
-      };
-      mutate({ body: tempObj });
-      setOpenModal(true);
-    }
+  const onSuccess = () => {
+    queryClient.invalidateQueries(RQ_KEY_TODOS);
   };
 
-  const titleHandler = (e: InputChangeEvent) => {
-    setTitle(e.target.value);
+  const onError = () => {
+    alert(error);
   };
 
-  const bodyHandler = (e: TextAreaChangeEvent) => {
-    setBody(e.target.value);
-  };
+  const { mutate: addTodo, error } = useAddTodo({ onSuccess, onError });
 
-  const dateHandler = (e: InputChangeEvent) => {
-    setDate(e.target.value);
+  const handleSubmit = async (values: ToDoPostData,actions:any) => {
+    addTodo({ body: values });
+    actions.resetForm();
+    setOpenModal(true);
   };
 
   const btn1Handler = () => {
-    queryClient.invalidateQueries("todos");
+    queryClient.invalidateQueries(RQ_KEY_TODOS);
     navigate(ROUTES.HOME);
   };
 
@@ -80,15 +52,7 @@ const AddTodoContainer = (): ReactElement => {
         btn1Handler={btn1Handler}
         btn2Handler={btn2Handler}
       />
-      <AddTodoComponent
-        title={title}
-        titleHandler={titleHandler}
-        body={body}
-        bodyHandler={bodyHandler}
-        date={date}
-        dateHandler={dateHandler}
-        handleSubmit={handleSubmit}
-      />
+      <AddTodoComponent handleSubmit={handleSubmit} />
     </>
   );
 };

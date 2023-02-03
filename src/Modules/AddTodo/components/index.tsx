@@ -1,73 +1,74 @@
 import React, { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
+import { Form, Formik, FormikHelpers } from "formik";
+import * as Yup from "yup";
+
+import { FormikControl } from "../../../Shared/components/FormikControl";
 
 import { ROUTES } from "../../../appContants";
-import {
-  FormSubmitEvent,
-  InputChangeEvent,
-  TASK_STATE,
-  TextAreaChangeEvent,
-} from "../../../constant";
+import { ToDoPostData } from "../../../data/types/types";
+import { DATE, INPUT, TEXTAREA } from "../../../constant";
 
 interface IProps {
-  title: string;
-  titleHandler: (e: InputChangeEvent) => void;
-  body: string;
-  bodyHandler: (e: TextAreaChangeEvent) => void;
-  date: string;
-  dateHandler: (e: InputChangeEvent) => void;
-  handleSubmit: (e: FormSubmitEvent) => void;
+  handleSubmit: (
+    values: ToDoPostData,
+    actions: FormikHelpers<ToDoPostData>
+  ) => void;
 }
 
 const AddTodoComponent: React.FC<IProps> = (props): ReactElement => {
-  const {
-    title,
-    titleHandler,
-    body,
-    bodyHandler,
-    date,
-    dateHandler,
-    handleSubmit,
-  } = props;
+  const { handleSubmit } = props;
+
+  const initialValues: ToDoPostData = {
+    title: "",
+    body: "",
+    date: "",
+    completed: false,
+  };
+
+  const validationSchema = Yup.object({
+    title: Yup.string().trim().required("Required"),
+    body: Yup.string().trim().required("Required"),
+    date: Yup.string().required("Required"),
+  });
 
   return (
-    <div className="add-task-form">
+    <div>
       <div className="cross-button">
         <NavLink className="cross-button-link" to={ROUTES.HOME}>
           X
         </NavLink>
       </div>
-      <form onSubmit={handleSubmit}>
-        <h2>Add Todo</h2>
-        <div className="form-control">
-          <label htmlFor="title">Task:</label>
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={titleHandler}
-          />
-        </div>
-        <div className="form-control">
-          <label htmlFor="due-date">Due Date:</label>
-          <input type="date" name="date" value={date} onChange={dateHandler} />
-        </div>
-        <div className="form-control">
-          <label htmlFor="body">Details:</label>
-          <textarea name="body" value={body} onChange={bodyHandler} />
-        </div>
-        <div className="form-control">
-          <label htmlFor="completed">Status:</label>
-          <input
-            id="disable-input"
-            className="disable-input"
-            type="text"
-            defaultValue={TASK_STATE.PENDING}
-            disabled
-          />
-        </div>
-        <input type="submit" value="Add Todo" />
-      </form>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {() => (
+          <div className="add-todo-form">
+            <Form>
+              <h2 className="add-heading">Add Todo</h2>
+              <FormikControl control={INPUT} name="title" label="Title" />
+              <FormikControl
+                control={TEXTAREA}
+                name="body"
+                label="Description"
+              />
+              <FormikControl control={DATE} name="date" label="Due-Date" />
+              <FormikControl
+                className="input-status"
+                control={INPUT}
+                name="completed"
+                label="Status"
+                disabled
+              />
+              <button type="submit" className="add-todo-button">
+                Submit
+              </button>
+            </Form>
+          </div>
+        )}
+      </Formik>
     </div>
   );
 };
