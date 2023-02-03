@@ -13,6 +13,7 @@ interface IProps {
 
 const TodoList: React.FC<IProps> = (props): ReactElement => {
   const { todos, pageNumber, pageNumberHandler, markTodoCompleted } = props;
+  const isEmpty: boolean = todos?.length === 0;
 
   return (
     <div className="list">
@@ -34,11 +35,7 @@ const TodoList: React.FC<IProps> = (props): ReactElement => {
         Prev
       </button>
       {pageNumber}
-      <button
-        onClick={() =>
-          pageNumberHandler(todos?.length !== 0 ? pageNumber + 1 : 1)
-        }
-      >
+      <button onClick={() => pageNumberHandler(isEmpty ?  1 : pageNumber +1)}>
         Next
       </button>
     </div>

@@ -8,7 +8,12 @@ import SelectBox from "../../../Shared/components/SelectBox";
 
 import { ToDoData } from "../../../data/types/types";
 
-import { InputChangeEvent, TASK_STATE } from "../../../constant";
+import {
+  InputChangeEvent,
+  STATUS_OPTIONS,
+  SORT_OPTIONS,
+  SORT_KEY_OPTIONS,
+} from "../../../constant";
 
 interface IProps {
   todos?: ToDoData[];
@@ -26,22 +31,27 @@ interface IProps {
   sortKeyHandler: (e: string) => void;
 }
 
-const { COMPLETED, PENDING } = TASK_STATE;
+const { ALL, COMPLETED, PENDING } = STATUS_OPTIONS;
+const { SELECT_ONE, ASC_KEY, ASC_VALUE, DESC_KEY, DESC_VALUE } = SORT_OPTIONS;
+const { ID, TITLE, BODY, DATE } = SORT_KEY_OPTIONS;
+
 const statusOptions = [
-  { key: "All", value: "All" },
+  { key: ALL, value: ALL },
   { key: COMPLETED, value: COMPLETED },
   { key: PENDING, value: PENDING },
 ];
+
 const sortOptions = [
-  { key: undefined, value: "Select One" },
-  { key: "asc", value: "A-Z" },
-  { key: "desc", value: "Z-A" },
+  { key: undefined, value: SELECT_ONE },
+  { key: ASC_KEY, value: ASC_VALUE },
+  { key: DESC_KEY, value: DESC_VALUE },
 ];
+
 const sortKeyOptions = [
-  { key: "id", value: "id" },
-  { key: "title", value: "title" },
-  { key: "body", value: "body" },
-  { key: "date", value: "date" },
+  { key: ID, value: ID },
+  { key: TITLE, value: TITLE },
+  { key: BODY, value: BODY },
+  { key: DATE, value: DATE },
 ];
 
 const ToDoComponent: React.FC<IProps> = (props): ReactElement => {
