@@ -1,58 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, ReactElement } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 import DisplayTaskComponent from "./components";
-import { useFetch } from "../../CustomHooks/useFetch";
 import Modal from "../../Shared/components/Modal";
+import Loader from "../../Shared/components/Loader";
+
+import { removeTodo } from "../../services/todos.services";
+import { useGetTodoById, useUpdateTodo } from "../../CustomHooks/QueryHooks";
 
 import { ROUTES } from "../../appContants";
-import { SelectChangeEvent, TASK_STATE } from "../../constant";
-import { TODO_URL } from "../../utils/constant";
-import { ReactElement } from "react";
+import { RQ_KEY_TODO, RQ_KEY_TODOS, TASK_STATE } from "../../constant";
 
 const DisplayTaskContainer = (): ReactElement => {
   const { id } = useParams();
-  const { data, loading, error } = useFetch(`${id}`);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError } = useGetTodoById({ id });
 
-  const deleteTodo = (todoId: number) => {
-    fetch(`${TODO_URL}/${todoId}`, {
-      method: "Delete",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .catch((err) => err);
+  const deleteTodo = (todoId?: number) => {
+    removeTodo(todoId);
     navigate(ROUTES.HOME);
   };
 
-  const markTodoCompleted = (e: SelectChangeEvent) => {
+  const onUpdateSuccess = () => {
+    queryClient.invalidateQueries(RQ_KEY_TODO);
+    queryClient.invalidateQueries(RQ_KEY_TODOS);
+  };
+
+  const { mutate } = useUpdateTodo({ onSuccess: onUpdateSuccess });
+
+  const markTodoCompleted = (status: string) => {
     let tempObj = {
       ...data,
-      completed: e.target.value === TASK_STATE.COMPLETED,
+      completed: status === TASK_STATE.COMPLETED,
     };
-    fetch(`${TODO_URL}/${id}`, {
-      method: "PATCH",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tempObj),
-    })
-      .then((res) => res.json())
-      .catch((err) => err);
+    mutate({ id: tempObj.id, body: tempObj });
   };
 
   const btn1Handler = () => {
-    deleteTodo(data.id);
+    deleteTodo(data?.id);
   };
 
   const btn2Handler = () => {
     setOpenModal(!openModal);
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <div>Error..</div>;
+  }
 
   return (
     <>
@@ -67,8 +68,6 @@ const DisplayTaskContainer = (): ReactElement => {
       />
       <DisplayTaskComponent
         data={data}
-        loading={loading}
-        error={error}
         markTodoCompleted={markTodoCompleted}
         modalHandler={btn2Handler}
       />

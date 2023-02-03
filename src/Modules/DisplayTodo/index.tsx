@@ -1,103 +1,102 @@
-import React, {
-  useCallback,
-  useState,
-  ReactElement,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useCallback, ReactElement, useReducer } from "react";
+import { useQueryClient } from "react-query";
 
 import ToDoComponent from "./components";
-import { useFetch } from "../../CustomHooks/useFetch";
+import Loader from "../../Shared/components/Loader";
 
 import { ToDoData } from "../../data/types/types";
+import { useGetTodos, useUpdateTodo } from "../../CustomHooks/QueryHooks";
 
-import { TODO_URL } from "../../utils/constant";
-import { filterByStatus, sortByTitle } from "./utils";
-import { InputChangeEvent, SelectChangeEvent } from "../../constant";
+import { ACTIONS, InputChangeEvent, RQ_KEY_TODOS } from "../../constant";
+import { displayTodoReducer, initialState } from "./reducers";
+
+const pageSize = 5;
 
 const TodoContainer = (): ReactElement => {
-  const [todos, setTodos] = useState<ToDoData[]>([]);
-  const { data, loading, error } = useFetch();
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [statusControl, setStatusControl] = useState<string>("");
-  const [sortControl, setSortControl] = useState<string>("");
-  let displayTodos = todos;
+  const [state, dispatch] = useReducer(displayTodoReducer, initialState);
+  const queryClient = useQueryClient();
+  const {
+    data: todos,
+    isLoading,
+    isError,
+    error,
+  } = useGetTodos({
+    pageNumber: state.pageNumber,
+    pageSize,
+    sortKey: state.sortKey,
+    sortControl: state.sortControl,
+    statusControl: state.statusControl,
+    searchTrigger: state.searchTrigger,
+  });
 
-  useEffect(() => {
-    if (data) {
-      setTodos(data);
-    }
-  }, [data]);
+  const onUpdateSuccess = () => {
+    queryClient.invalidateQueries(RQ_KEY_TODOS);
+  };
 
-  const markStatus = (id: number, completed: boolean): ToDoData[] =>
-    todos.map((todo) => {
-      if (todo.id === id) {
-        let tempObj = { ...todo, completed: completed };
-        fetch(`${TODO_URL}/${id}`, {
-          method: "PATCH",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(tempObj),
-        })
-          .then((res) => res.json())
-          .catch((err) => err);
-        return tempObj;
-      } else {
-        return todo;
-      }
-    });
+  const { mutate } = useUpdateTodo({ onSuccess: onUpdateSuccess });
 
-  const markTodoCompleted = useCallback(
-    (id: number, completed: boolean) => setTodos(markStatus(id, completed)),
-    [markStatus]
-  );
-
-  const statusListHandler = useCallback(
-    (e: SelectChangeEvent) => {
-      setStatusControl(e.target.value);
+  const markTodo = useCallback(
+    (id: number, completed: boolean) => {
+      todos?.map((todo: ToDoData) => {
+        if (todo.id === id) {
+          let tempObj = { ...todo, completed };
+          mutate({ id, body: tempObj });
+          return tempObj;
+        } else {
+          return todo;
+        }
+      });
     },
-    [statusControl]
+    [todos]
   );
 
-  const searchHandler = useCallback(
-    (e: InputChangeEvent) => {
-      setSearchInput(e.target.value);
-    },
-    [searchInput]
-  );
+  const statusListHandler = useCallback((statusValue: string) => {
+    dispatch({ type: ACTIONS.SET_STATUS_CONTROL, payload: statusValue });
+  }, []);
 
-  const sortHandler = useCallback(
-    (e: SelectChangeEvent) => {
-      setSortControl(e.target.value);
-    },
-    [sortControl]
-  );
+  const searchHandler = useCallback((e: InputChangeEvent) => {
+    dispatch({ type: ACTIONS.SET_SEARCH_INPUT, payload: e.target.value });
+  }, []);
 
-  displayTodos = displayTodos.filter((todo) =>
-    todo.title.includes(searchInput)
-  );
+  const searchButtonHandler = useCallback((trigger: string) => {
+    dispatch({ type: ACTIONS.SET_SEARCH_TRIGGER, payload: trigger });
+  }, []);
 
-  displayTodos = useMemo(
-    () => filterByStatus(statusControl, displayTodos),
-    [statusControl, displayTodos]
-  );
+  const sortHandler = useCallback((sortValue: string) => {
+    dispatch({ type: ACTIONS.SET_SORT_CONTROL, payload: sortValue });
+  }, []);
 
-  displayTodos = useMemo(
-    () => sortByTitle(sortControl, displayTodos),
-    [sortControl, displayTodos]
-  );
+  const sortKeyHandler = useCallback((sortValue: string) => {
+    dispatch({ type: ACTIONS.SET_SORT_KEY, payload: sortValue });
+  }, []);
+
+  const pageNumberHandler = useCallback((pageNumber: number) => {
+    dispatch({ type: ACTIONS.SET_PAGE_NUMBER, payload: pageNumber });
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <div className="error-msg">{error.message}</div>;
+  }
 
   return (
     <ToDoComponent
-      todos={displayTodos}
-      markTodoCompleted={markTodoCompleted}
-      loading={loading}
-      error={error}
+      todos={todos}
+      markTodoCompleted={markTodo}
+      searchInput={state.searchInput}
       searchHandler={searchHandler}
+      searchButtonHandler={searchButtonHandler}
+      statusControl={state.statusControl}
       statusListHandler={statusListHandler}
       sortHandler={sortHandler}
+      pageNumber={state.pageNumber}
+      pageNumberHandler={pageNumberHandler}
+      sortControl={state.sortControl}
+      sortKey={state.sortKey}
+      sortKeyHandler={sortKeyHandler}
     />
   );
 };

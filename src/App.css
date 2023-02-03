@@ -16,8 +16,8 @@
 
 .loading-spinner {
   position: absolute;
-  top:40vh;
-  left:42vw;
+  top: 40vh;
+  left: 42vw;
 }
 
 .error-msg {
@@ -128,6 +128,8 @@ input.text {
   font-weight: bold;
   border: none;
   border-radius: 20px;
+  position: relative;
+  left: 70px;
 }
 
 .display-table {
@@ -158,35 +160,43 @@ input.text {
   color: rgba(246, 139, 16, 0.8);
 }
 
-form {
+/* Add ToDo Form */
+
+.add-todo-form {
   overflow: hidden;
   margin-top: 5%;
   margin-left: 5%;
+  background: #fff;
+  width: 60%;
+  margin: 80px auto;
+  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
+  height: 500px;
+  display: flex;
+  justify-content: center;
 }
 
-form label {
+.add-todo-form label {
   width: 150px;
   margin-right: 5%;
+  font-weight: bold;
 }
 
-form div {
-  margin-top: 1.5rem;
+.form-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
-form input {
-  width: 250px;
-  height: 25px;
-  border-radius: 2%;
-  border-color: rgba(51, 51, 51, 0.753);
+.form-container {
+  display: block;
+  margin-top: 1rem;
 }
 
-form textarea {
-  width: 250px;
-  border-radius: 2%;
-  border-color: rgba(51, 51, 51, 0.753);
+.add-heading {
+  text-align: center;
 }
 
-form input[type="submit"] {
+.add-todo-button {
   width: 40%;
   height: auto;
   background-color: rgb(246, 162, 67);
@@ -199,34 +209,18 @@ form input[type="submit"] {
   margin-left: 12%;
 }
 
-.add-task-form {
-  margin: 25%;
-  background: #fff;
-  width: 60%;
-  margin: 100px auto;
-  box-shadow: 0px 2px 38px rgba(246, 162, 67, 0.2);
-  height: 500px;
-  display: flex;
-  justify-content: center;
+.add-todo-form input {
+  width: 269px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.form-control {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.add-task-form label {
-  font-weight: bold;
-  display: flex;
-}
-
-.add-task-form input[type="text"],
-input[type="email"],
+.add-todo-form input[type="text"],
 input[type="date"],
 textarea {
   display: block;
-  width: 400px;
+  width: 250px;
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.5;
@@ -236,9 +230,15 @@ textarea {
   border-radius: 4px;
 }
 
-.add-task-form textarea {
-  width: 420px;
+.input-status {
+  background-color: #7675755c;
+  color: #0d0c0c;
+  text-align: center;
 }
+
+/* End Add ToDo Form*/
+
+/* Modal */
 
 .modalBackground {
   width: 100vw;
@@ -287,6 +287,10 @@ textarea {
   cursor: pointer;
 }
 
+/* End Modal */
+
+/* Search Box */
+
 .search-box {
   height: 32px;
   border-radius: 2cm;
@@ -294,14 +298,20 @@ textarea {
   font-size: 16px;
 }
 
+/* End Search Box */
+
+/* Select Box */
+
 #select-input {
   height: 32px;
-  width:150px;
+  width: 150px;
   border-width: 0.5px;
   border-radius: 2cm;
   text-align: center;
   font-size: 16px;
 }
+
+/* End Select Box */
 
 .display-todo-feature {
   display: flex;
@@ -326,4 +336,12 @@ textarea {
   position: absolute;
   top: 14.5%;
   right: 10%;
+}
+
+.error-form-msg {
+  color: red;
+  font-size: small;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

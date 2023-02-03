@@ -34,3 +34,14 @@ export const sortByTitle = (control: string, data: ToDoData[]): ToDoData[] => {
       return data;
   }
 };
+
+export const statusFunction = (status?: string): boolean | undefined => {
+  switch (status) {
+    case COMPLETED:
+      return true;
+    case PENDING:
+      return false;
+    default:
+      return undefined;
+  }
+};
